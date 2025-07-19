@@ -1,0 +1,1798 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Article Collection Hub</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #4f46e5;
+            --primary-dark: #4338ca;
+            --dark: #1e293b;
+            --light: #f8fafc;
+            --gray: #94a3b8;
+            --border-radius: 8px;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --transition: all 0.2s ease-in-out;
+            
+            /* Light mode colors */
+            --bg-primary: #f1f5f9;
+            --bg-secondary: #ffffff;
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --border-color: #e2e8f0;
+        }
+
+        [data-theme="dark"] {
+            --bg-primary: #0f172a;
+            --bg-secondary: #1e293b;
+            --text-primary: #ffffff;
+            --text-secondary: #e0e0e0;
+            --border-color: #334155;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
+        }
+
+        [data-theme="dark"] body,
+        [data-theme="dark"] h1, [data-theme="dark"] h2, [data-theme="dark"] h3, [data-theme="dark"] h4, [data-theme="dark"] h5, [data-theme="dark"] h6,
+        [data-theme="dark"] p,
+        [data-theme="dark"] a,
+        [data-theme="dark"] span,
+        [data-theme="dark"] div,
+        [data-theme="dark"] li,
+        [data-theme="dark"] .article-view *,
+        [data-theme="dark"] .articles-modal * {
+            color: var(--text-primary) !important;
+        }
+
+        body {
+            color: var(--text-primary);
+        }
+
+        [data-theme="dark"] .modal-article:hover,
+        [data-theme="dark"] .collection-card:hover, 
+        [data-theme="dark"] .nav-links a:hover,
+        [data-theme="dark"] .footer-column a:hover {
+            color: #a78bfa !important;
+            background-color: rgba(127, 63, 255, 0.08) !important;
+            box-shadow: 0 0 10px 0 #a78bfa44;
+            transition: background 0.3s, color 0.3s, box-shadow 0.3s;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            transition: var(--transition);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        header {
+            background-color: var(--bg-secondary);
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            padding: 1rem 0;
+            transition: var(--transition);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1.5rem;
+            margin-right: 1rem;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--dark);
+            font-weight: 500;
+            transition: var(--transition);
+            padding: 0.5rem 0;
+            border-bottom: 2px solid transparent;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+            border-bottom: 2px solid var(--primary);
+        }
+
+        .theme-toggle {
+            background: none;
+            border: 2px solid var(--border-color);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+            color: var(--text-primary);
+            font-size: 1.1rem;
+        }
+
+        .theme-toggle:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+            transform: scale(1.05);
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .search-container {
+            display: flex;
+            gap: 1rem;
+            margin: 2rem 0;
+            position: relative;
+        }
+
+        #global-search {
+            flex: 1;
+            padding: 0.75rem 1rem 0.75rem 2.5rem;
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+            transition: var(--transition);
+            background-color: var(--bg-secondary);
+            color: var(--text-primary);
+        }
+
+        #global-search:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.2);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--gray);
+        }
+
+        #category-filter {
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+            background-color: var(--bg-secondary);
+            color: var(--text-primary);
+            cursor: pointer;
+            min-width: 200px;
+            transition: var(--transition);
+        }
+
+        .collections-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .collection-card {
+            background-color: var(--bg-secondary);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            cursor: pointer;
+        }
+
+        .collection-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+        }
+
+        .collection-image {
+            height: 180px;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+
+        .collection-count {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            background-color: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+        }
+
+        .collection-content {
+            padding: 1.5rem;
+        }
+
+        .collection-category {
+            display: inline-block;
+            padding: 0.25rem 0.5rem;
+            background-color: var(--primary);
+            color: white;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+        }
+
+        .collection-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+        }
+
+        .collection-description {
+            color: #64748b;
+            margin-bottom: 1rem;
+        }
+
+        /* Articles Modal */
+        .articles-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            overflow-y: auto;
+            padding: 2rem 0;
+        }
+
+        .modal-content {
+            background-color: var(--bg-secondary);
+            border-radius: var(--border-radius);
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+            position: relative;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--gray);
+        }
+
+        .modal-search-container {
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+
+        #modal-search {
+            width: 100%;
+            padding: 0.75rem 1rem 0.75rem 2.5rem;
+            border: 1px solid #e2e8f0;
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+        }
+
+        #modal-search:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.2);
+        }
+
+        .modal-search-icon {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--gray);
+        }
+
+        .modal-articles {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1rem;
+        }
+
+        .modal-article {
+            padding: 1rem;
+            border: 1px solid #e2e8f0;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background-color: var(--bg-secondary);
+        }
+
+        .modal-article:hover {
+            background-color: #f5f3ff;
+            border-color: var(--primary);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px -1px rgba(79, 70, 229, 0.1), 0 2px 4px -1px rgba(79, 70, 229, 0.06);
+        }
+
+        .modal-article h3 {
+            margin-bottom: 0.5rem;
+        }
+
+        .modal-article p {
+            color: #64748b;
+            font-size: 0.9rem;
+        }
+
+        /* Article View */
+        .article-view {
+            display: none;
+            background-color: white;
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            box-shadow: var(--shadow);
+            margin-bottom: 2rem;
+        }
+
+        .article-header {
+            margin-bottom: 2rem;
+        }
+
+        .article-category {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            background-color: var(--primary);
+            color: white;
+            border-radius: 4px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .article-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            line-height: 1.2;
+        }
+
+        .article-meta {
+            display: flex;
+            gap: 1rem;
+            color: var(--gray);
+            font-size: 0.9rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .article-image {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+            border-radius: var(--border-radius);
+            margin-bottom: 2rem;
+        }
+
+        .article-body {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: #334155;
+        }
+
+        .article-body p {
+            margin-bottom: 1.5rem;
+        }
+
+        .article-body h2 {
+            font-size: 1.5rem;
+            margin: 2rem 0 1rem;
+            color: var(--dark);
+        }
+
+        .article-body ul, .article-body ol {
+            margin-bottom: 1.5rem;
+            padding-left: 2rem;
+        }
+
+        .article-body li {
+            margin-bottom: 0.5rem;
+        }
+
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 2rem;
+            background-color: var(--primary);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            cursor: pointer;
+            border-radius: var(--border-radius);
+            font-weight: 500;
+            transition: var(--transition);
+        }
+
+        .back-btn:hover {
+            background-color: var(--primary-dark);
+        }
+
+        .no-results {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 3rem;
+            color: var(--gray);
+        }
+
+        /* Enhanced Footer Styles */
+        footer {
+            background-color: var(--dark);
+            color: white;
+            padding: 3rem 0 1.5rem;
+            margin-top: 3rem;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-column h3 {
+            font-size: 1.1rem;
+            margin-bottom: 1.25rem;
+            color: white;
+            position: relative;
+            padding-bottom: 0.5rem;
+        }
+
+        .footer-column h3::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 40px;
+            height: 2px;
+            background-color: var(--primary);
+        }
+
+        .footer-column ul {
+            list-style: none;
+        }
+
+        .footer-column li {
+            margin-bottom: 0.75rem;
+        }
+
+        .footer-column a {
+            color: var(--gray);
+            text-decoration: none;
+            transition: var(--transition);
+            display: inline-block;
+        }
+
+        .footer-column a:hover {
+            color: white;
+            transform: translateX(5px);
+        }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1.25rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .social-links a {
+            color: white;
+            font-size: 1.25rem;
+            transition: var(--transition);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.1);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .social-links a:hover {
+            background-color: var(--primary);
+            transform: translateY(-3px);
+        }
+
+        .copyright {
+            color: var(--gray);
+            font-size: 0.875rem;
+        }
+
+        .newsletter-form {
+            display: flex;
+            margin-top: 1rem;
+        }
+
+        .newsletter-input {
+            flex: 1;
+            padding: 0.75rem;
+            border: none;
+            border-radius: var(--border-radius) 0 0 var(--border-radius);
+            font-size: 0.9rem;
+        }
+
+        .newsletter-btn {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 0 1.25rem;
+            border-radius: 0 var(--border-radius) var(--border-radius) 0;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .newsletter-btn:hover {
+            background-color: var(--primary-dark);
+        }
+
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .nav-links {
+                margin-right: 0;
+                margin-top: 1rem;
+            }
+
+            .search-container {
+                flex-direction: column;
+            }
+
+            #category-filter {
+                width: 100%;
+            }
+
+            .collections-container {
+                grid-template-columns: 1fr;
+            }
+
+            .article-image {
+                height: 250px;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <a href="#" class="logo" onclick="showCollections(); return false;">ArticleHub</a>
+                <div class="header-actions">
+                    <nav class="nav-links">
+                        <a href="#" onclick="showCollections(); return false;">Home</a>
+                        <a href="aboutus.html">About</a>
+                    </nav>
+                    <button class="theme-toggle" onclick="toggleTheme()" title="Toggle dark/light mode">
+                        <i class="fas fa-moon" id="theme-icon"></i>
+                    </button>
+                </div>
+                <div class="search-container">
+                    <i class="fas fa-search search-icon"></i>
+                    <input type="text" id="global-search" placeholder="Search all articles...">
+                    <select id="category-filter">
+                        <option value="">All Categories</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="collections-container" id="collections-list"></div>
+        
+        <!-- Articles Modal -->
+        <div class="articles-modal" id="articles-modal">
+            <div class="modal-content">
+                <button class="close-modal" onclick="closeModal()">&times;</button>
+                <h2 id="modal-collection-title"></h2>
+                <p id="modal-collection-description"></p>
+                
+                <div class="modal-search-container">
+                    <i class="fas fa-search modal-search-icon"></i>
+                    <input type="text" id="modal-search" placeholder="Search in this collection...">
+                </div>
+                
+                <div class="modal-articles" id="modal-articles-list"></div>
+            </div>
+        </div>
+        
+        <!-- Single Article View -->
+        <article class="article-view" id="article-view">
+            <div class="article-header">
+                <span class="article-category" id="article-category"></span>
+                <h1 class="article-title" id="article-title"></h1>
+                <div class="article-meta">
+                    <span id="article-date"></span>
+                    <span id="article-author"></span>
+                </div>
+            </div>
+            <img class="article-image" id="article-image" alt="Article image">
+            <div class="article-body" id="article-body"></div>
+            <button class="back-btn" onclick="backToModal()">
+                <i class="fas fa-arrow-left"></i> Back to Articles
+            </button>
+        </article>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>ArticleHub</h3>
+                    <p style="color: var(--gray); margin-bottom: 1rem;">Your premier destination for high-quality articles on web development, design, and technology career growth.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-linkedin"></i></a>
+                        <a href="#"><i class="fab fa-github"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Categories</h3>
+                    <ul>
+                        <li><a href="#">Web Development</a></li>
+                        <li><a href="#">CSS</a></li>
+                        <li><a href="#">JavaScript</a></li>
+                        <li><a href="#">React</a></li>
+                        <li><a href="#">Design</a></li>
+                        <li><a href="#">Career</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Resources</h3>
+                    <ul>
+                        <li><a href="#">Documentation</a></li>
+                        <li><a href="#">Tutorials</a></li>
+                        <li><a href="#">Cheatsheets</a></li>
+                        <li><a href="#">Code Samples</a></li>
+                        <li><a href="#">Community</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Newsletter</h3>
+                    <p style="color: var(--gray);">Subscribe to get the latest articles and resources.</p>
+                    <form class="newsletter-form">
+                        <input type="email" class="newsletter-input" placeholder="Your email">
+                        <button type="submit" class="newsletter-btn"><i class="fas fa-paper-plane"></i></button>
+                    </form>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p class="copyright">© 2025 ArticleHub. All rights reserved. | <a href="#" style="color: var(--gray);">Privacy Policy</a> | <a href="#" style="color: var(--gray);">Terms of Service</a></p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Data structure for collections and articles
+        const collections = [
+            {
+                id: 1,
+                title: "Web Development Trends",
+                description: "Explore the latest trends and technologies in web development",
+                category: "Web Development",
+                image: "https://images.unsplash.com/photo-1620712943543-bebda4e38f71?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1200&q=80",
+                articles: [
+                    {
+                        id: 101,
+                        title: "The Future of Web Development in 2025",
+                        body: `<p>The web development landscape is constantly evolving, and 2025 promises to bring exciting new technologies and paradigms. In this article, we'll explore the key trends that every developer should be aware of.</p>
+                        <h2>1. AI-Powered Development</h2>
+                        <p>Artificial Intelligence is transforming how we build websites. From automated code generation to intelligent debugging assistants, AI tools are becoming indispensable.</p>`,
+                        date: "June 15, 2025",
+                        author: "By Sarah Johnson"
+                    },
+                    {
+                        id: 102,
+                        title: "WebAssembly: The Next Big Thing",
+                        body: `<p>WebAssembly (Wasm) is reaching new levels of performance and capability. With major browsers now supporting WASI (WebAssembly System Interface), we can run more complex applications directly in the browser at near-native speed.</p>`,
+                        date: "May 28, 2025",
+                        author: "By David Chen"
+                    },
+                    {
+                        id: 103,
+                        title: "Edge Computing for Web Apps",
+                        body: `<p>The traditional client-server model is giving way to edge computing architectures. With frameworks like Next.js leading the charge, developers can now build applications that execute logic closer to users.</p>`,
+                        date: "May 10, 2025",
+                        author: "By Emily Rodriguez"
+                    },
+                    {
+                        id: 104,
+                        title: "The Rise of Micro Frontends",
+                        body: `<p>Micro frontends extend the microservices concept to frontend development. This architectural style allows teams to work independently on different parts of the same application.</p>`,
+                        date: "April 22, 2025",
+                        author: "By Michael Thompson"
+                    },
+                    {
+                        id: 105,
+                        title: "Progressive Web Apps in 2025",
+                        body: `<p>PWAs continue to evolve, blurring the line between web and native apps. New capabilities in service workers and web app manifests are making PWAs more powerful than ever.</p>`,
+                        date: "April 15, 2025",
+                        author: "By Jessica Williams"
+                    },
+                    {
+                        id: 106,
+                        title: "CSS-in-JS: The Evolution Continues",
+                        body: `<p>The CSS-in-JS approach has matured significantly. New tools and patterns are making this methodology more performant and maintainable than ever before.</p>`,
+                        date: "March 30, 2025",
+                        author: "By Robert Kim"
+                    },
+                    {
+                        id: 107,
+                        title: "TypeScript Best Practices",
+                        body: `<p>TypeScript adoption continues to grow. Learn the latest best practices for type safety and developer productivity in large-scale applications.</p>`,
+                        date: "March 22, 2025",
+                        author: "By Lisa Wong"
+                    },
+                    {
+                        id: 108,
+                        title: "Serverless Architectures",
+                        body: `<p>Serverless computing is changing how we build and deploy applications. Discover patterns for building scalable, cost-effective serverless systems.</p>`,
+                        date: "March 15, 2025",
+                        author: "By Thomas Lee"
+                    },
+                    {
+                        id: 109,
+                        title: "GraphQL vs REST",
+                        body: `<p>The debate between GraphQL and REST continues. This article provides a balanced comparison and guidance on when to use each approach.</p>`,
+                        date: "February 28, 2025",
+                        author: "By Amanda Garcia"
+                    },
+                    {
+                        id: 110,
+                        title: "Web Security Essentials",
+                        body: `<p>With cyber threats on the rise, web security has never been more important. Learn the essential practices every developer should implement.</p>`,
+                        date: "February 15, 2025",
+                        author: "By Daniel Park"
+                    },
+                    {
+                        id: 111,
+                        title: "Modern JavaScript Frameworks Comparison",
+                        body: `<p>With so many JavaScript frameworks available, choosing the right one can be challenging. This article compares React, Vue, Angular, and Svelte to help you make an informed decision.</p>`,
+                        date: "January 30, 2025",
+                        author: "By Brian Taylor"
+                    },
+                    {
+                        id: 112,
+                        title: "Web Performance Optimization",
+                        body: `<p>Speed is crucial for user experience and SEO. Learn advanced techniques to optimize your website's performance and loading times.</p>`,
+                        date: "January 15, 2025",
+                        author: "By Jessica Adams"
+                    }
+                ]
+            },
+            {
+                id: 2,
+                title: "CSS Mastery",
+                description: "Advanced CSS techniques for modern web interfaces",
+                category: "CSS",
+                image: "https://images.unsplash.com/photo-1547658719-da2b51169166?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1200&q=80",
+                articles: [
+                    {
+                        id: 201,
+                        title: "Container Queries Revolution",
+                        body: `<p>Finally, we can style elements based on their container size rather than just the viewport! Container queries solve many responsive design challenges, especially for component-based architectures.</p>`,
+                        date: "May 22, 2025",
+                        author: "By Michael Chen"
+                    },
+                    {
+                        id: 202,
+                        title: "CSS Nesting Explained",
+                        body: `<p>Native CSS nesting reduces verbosity and makes stylesheets more maintainable. This feature, long available in preprocessors like Sass, is now native in modern browsers.</p>`,
+                        date: "May 15, 2025",
+                        author: "By Sarah Johnson"
+                    },
+                    {
+                        id: 203,
+                        title: "Scroll-Driven Animations",
+                        body: `<p>The new scroll timeline API allows creating animations tied to scroll position without JavaScript. This enables performant scroll effects that were previously complex to implement.</p>`,
+                        date: "April 30, 2025",
+                        author: "By David Rodriguez"
+                    },
+                    {
+                        id: 204,
+                        title: "CSS Grid vs Flexbox",
+                        body: `<p>Understanding when to use CSS Grid versus Flexbox is crucial for modern layouts. This article explores the strengths of each and provides practical guidelines.</p>`,
+                        date: "April 18, 2025",
+                        author: "By Emily Wilson"
+                    },
+                    {
+                        id: 205,
+                        title: "CSS Custom Properties",
+                        body: `<p>CSS variables (custom properties) have revolutionized how we write and maintain CSS. Learn advanced patterns for leveraging them in your projects.</p>`,
+                        date: "March 28, 2025",
+                        author: "By James Peterson"
+                    },
+                    {
+                        id: 206,
+                        title: "Advanced Selectors",
+                        body: `<p>Master complex CSS selectors to write more efficient and maintainable stylesheets. Learn about :is(), :where(), :has() and other powerful selectors.</p>`,
+                        date: "March 15, 2025",
+                        author: "By Rachel Kim"
+                    },
+                    {
+                        id: 207,
+                        title: "CSS Architecture Patterns",
+                        body: `<p>As applications grow, CSS architecture becomes critical. Explore BEM, SMACSS, and other methodologies for scalable CSS.</p>`,
+                        date: "February 28, 2025",
+                        author: "By Kevin Brown"
+                    },
+                    {
+                        id: 208,
+                        title: "Dark Mode Implementation",
+                        body: `<p>Implementing dark mode has become a standard requirement. Learn the best practices for creating themeable interfaces with CSS.</p>`,
+                        date: "February 15, 2025",
+                        author: "By Sophia Lee"
+                    },
+                    {
+                        id: 209,
+                        title: "CSS Performance Optimization",
+                        body: `<p>CSS can significantly impact page performance. Discover techniques to optimize your stylesheets for faster rendering.</p>`,
+                        date: "January 30, 2025",
+                        author: "By Jason Wilson"
+                    },
+                    {
+                        id: 210,
+                        title: "CSS for Print",
+                        body: `<p>Print stylesheets are often overlooked but remain important for many applications. Learn how to create effective print layouts with CSS.</p>`,
+                        date: "January 15, 2025",
+                        author: "By Olivia Martinez"
+                    },
+                    {
+                        id: 211,
+                        title: "CSS Blend Modes",
+                        body: `<p>CSS blend modes allow you to create stunning visual effects by controlling how elements blend with their background. Learn how to use them effectively.</p>`,
+                        date: "December 30, 2024",
+                        author: "By Brian Taylor"
+                    },
+                    {
+                        id: 212,
+                        title: "Responsive Typography",
+                        body: `<p>Creating typography that works well across all devices is essential. Learn modern techniques for responsive typography in CSS.</p>`,
+                        date: "December 15, 2024",
+                        author: "By Jessica Adams"
+                    }
+                ]
+            },
+            {
+                id: 3,
+                title: "JavaScript Performance",
+                description: "Optimize your JavaScript applications for speed and efficiency",
+                category: "JavaScript",
+                image: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1200&q=80",
+                articles: [
+                    {
+                        id: 301,
+                        title: "JavaScript Performance Optimization",
+                        body: `<p>In an era where web applications are becoming increasingly complex, performance optimization is crucial. Here are key strategies to optimize your JavaScript code.</p>`,
+                        date: "April 10, 2025",
+                        author: "By David Rodriguez"
+                    },
+                    {
+                        id: 302,
+                        title: "Memory Management in JS",
+                        body: `<p>JavaScript's garbage collection is automatic but not infallible. Learn about common memory leaks and how to avoid them in your applications.</p>`,
+                        date: "March 25, 2025",
+                        author: "By Michael Chen"
+                    },
+                    {
+                        id: 303,
+                        title: "Mastering Web Workers",
+                        body: `<p>Offload CPU-intensive tasks to web workers to prevent UI thread blocking. Modern patterns like Comlink make working with workers much easier.</p>`,
+                        date: "March 15, 2025",
+                        author: "By Sarah Johnson"
+                    },
+                    {
+                        id: 304,
+                        title: "The Event Loop Explained",
+                        body: `<p>Understanding JavaScript's event loop is crucial for writing efficient asynchronous code. This deep dive explains how it all works under the hood.</p>`,
+                        date: "February 28, 2025",
+                        author: "By Emily Wilson"
+                    },
+                    {
+                        id: 305,
+                        title: "Modern JavaScript Patterns",
+                        body: `<p>JavaScript has evolved significantly in recent years. Explore modern patterns and best practices that will make your code more maintainable and efficient.</p>`,
+                        date: "February 15, 2025",
+                        author: "By James Peterson"
+                    },
+                    {
+                        id: 306,
+                        title: "ES2025 Features Preview",
+                        body: `<p>Get a sneak peek at upcoming JavaScript features. Learn what's coming in the next version of ECMAScript and how to prepare.</p>`,
+                        date: "January 30, 2025",
+                        author: "By Brian Taylor"
+                    },
+                    {
+                        id: 307,
+                        title: "Functional Programming in JS",
+                        body: `<p>Functional programming concepts can lead to more predictable and maintainable code. Learn how to apply these principles in JavaScript.</p>`,
+                        date: "January 15, 2025",
+                        author: "By Jessica Adams"
+                    },
+                    {
+                        id: 308,
+                        title: "Debugging Techniques",
+                        body: `<p>Master advanced debugging techniques to solve complex JavaScript issues faster. Learn about Chrome DevTools features and debugging patterns.</p>`,
+                        date: "December 20, 2024",
+                        author: "By Mark Robinson"
+                    },
+                    {
+                        id: 309,
+                        title: "JavaScript Testing Strategies",
+                        body: `<p>Comprehensive testing is essential for robust applications. Explore unit testing, integration testing, and end-to-end testing approaches.</p>`,
+                        date: "December 10, 2024",
+                        author: "By Laura Wilson"
+                    },
+                    {
+                        id: 310,
+                        title: "Optimizing Bundle Size",
+                        body: `<p>Large JavaScript bundles can significantly impact performance. Learn techniques to analyze and reduce your bundle size effectively.</p>`,
+                        date: "November 30, 2024",
+                        author: "By Eric Thompson"
+                    },
+                    {
+                        id: 311,
+                        title: "Asynchronous Patterns",
+                        body: `<p>Master modern asynchronous programming patterns in JavaScript. Learn about async/await, promises, and reactive programming.</p>`,
+                        date: "November 15, 2024",
+                        author: "By Daniel Park"
+                    },
+                    {
+                        id: 312,
+                        title: "JavaScript Engines Deep Dive",
+                        body: `<p>Understanding how JavaScript engines work can help you write more performant code. Learn about V8, SpiderMonkey, and JavaScriptCore internals.</p>`,
+                        date: "October 30, 2024",
+                        author: "By Amanda Garcia"
+                    }
+                ]
+            },
+            {
+                id: 4,
+                title: "React Ecosystem",
+                description: "Latest developments in the React world",
+                category: "React",
+                image: "https://images.unsplash.com/photo-1633356122544-f134324a6cee?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1200&q=80",
+                articles: [
+                    {
+                        id: 401,
+                        title: "React Server Components",
+                        body: `<p>React Server Components represent a fundamental shift in how we build React applications. Learn how they work and when to use them.</p>`,
+                        date: "May 5, 2025",
+                        author: "By Sarah Johnson"
+                    },
+                    {
+                        id: 402,
+                        title: "State Management in 2025",
+                        body: `<p>The state management landscape continues to evolve. Compare the latest solutions and choose the right approach for your project.</p>`,
+                        date: "April 28, 2025",
+                        author: "By David Chen"
+                    },
+                    {
+                        id: 403,
+                        title: "React Performance Optimization",
+                        body: `<p>Keep your React applications fast and responsive with these advanced optimization techniques.</p>`,
+                        date: "April 15, 2025",
+                        author: "By Michael Brown"
+                    },
+                    {
+                        id: 404,
+                        title: "React Native Updates",
+                        body: `<p>The latest improvements in React Native bring it closer to native performance. Learn what's new and how to leverage these features.</p>`,
+                        date: "March 30, 2025",
+                        author: "By Emily Wilson"
+                    },
+                    {
+                        id: 405,
+                        title: "Building Accessible React Apps",
+                        body: `<p>Accessibility should be a priority from day one. Learn how to build React applications that everyone can use.</p>`,
+                        date: "March 15, 2025",
+                        author: "By James Peterson"
+                    },
+                    {
+                        id: 406,
+                        title: "React Suspense Deep Dive",
+                        body: `<p>Suspense is changing how we handle asynchronous operations in React. Understand its full potential and limitations.</p>`,
+                        date: "February 28, 2025",
+                        author: "By Rachel Kim"
+                    },
+                    {
+                        id: 407,
+                        title: "React Testing Strategies",
+                        body: `<p>Effective testing is crucial for maintainable React applications. Learn modern testing approaches and tools.</p>`,
+                        date: "February 15, 2025",
+                        author: "By Kevin Brown"
+                    },
+                    {
+                        id: 408,
+                        title: "Micro Frontends with React",
+                        body: `<p>Scale your frontend development with micro frontends. Learn patterns for implementing this architecture with React.</p>`,
+                        date: "January 30, 2025",
+                        author: "By Sophia Lee"
+                    },
+                    {
+                        id: 409,
+                        title: "React Animation Techniques",
+                        body: `<p>Create smooth, performant animations in React. Compare different animation libraries and approaches.</p>`,
+                        date: "January 15, 2025",
+                        author: "By Jason Wilson"
+                    },
+                    {
+                        id: 410,
+                        title: "React 19 Preview",
+                        body: `<p>What's coming in the next major version of React? Get an early look at potential new features and changes.</p>`,
+                        date: "December 30, 2024",
+                        author: "By Olivia Martinez"
+                    },
+                    {
+                        id: 411,
+                        title: "React Hooks Patterns",
+                        body: `<p>Master advanced patterns for using React Hooks. Learn how to create custom hooks and avoid common pitfalls.</p>`,
+                        date: "December 15, 2024",
+                        author: "By Brian Taylor"
+                    },
+                    {
+                        id: 412,
+                        title: "React and TypeScript",
+                        body: `<p>TypeScript brings type safety to React applications. Learn best practices for using TypeScript with React.</p>`,
+                        date: "November 30, 2024",
+                        author: "By Jessica Adams"
+                    }
+                ]
+            },
+            {
+                id: 5,
+                title: "UX/UI Design",
+                description: "Principles and practices for effective design",
+                category: "Design",
+                image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1200&q=80",
+                articles: [
+                    {
+                        id: 501,
+                        title: "Psychology of UX Design",
+                        body: `<p>Understanding user psychology leads to more intuitive interfaces. Learn cognitive principles that inform great UX design.</p>`,
+                        date: "April 5, 2025",
+                        author: "By Emily Wilson"
+                    },
+                    {
+                        id: 502,
+                        title: "Design Systems Implementation",
+                        body: `<p>Design systems improve consistency and efficiency. Learn how to create and maintain an effective design system.</p>`,
+                        date: "March 28, 2025",
+                        author: "By James Peterson"
+                    },
+                    {
+                        id: 503,
+                        title: "Accessibility Best Practices",
+                        body: `<p>Accessible design benefits all users. Learn practical techniques to make your interfaces more inclusive.</p>`,
+                        date: "March 15, 2025",
+                        author: "By Rachel Kim"
+                    },
+                    {
+                        id: 504,
+                        title: "Mobile-First Design",
+                        body: `<p>With mobile usage continuing to grow, mobile-first design is more important than ever. Learn strategies for effective mobile experiences.</p>`,
+                        date: "February 28, 2025",
+                        author: "By Kevin Brown"
+                    },
+                    {
+                        id: 505,
+                        title: "Dark Mode Design",
+                        body: `<p>Dark mode has become an expected feature. Learn design considerations for implementing dark themes effectively.</p>`,
+                        date: "February 15, 2025",
+                        author: "By Sophia Lee"
+                    },
+                    {
+                        id: 506,
+                        title: "Microinteractions Matter",
+                        body: `<p>Small animations and feedback loops significantly enhance user experience. Learn how to design effective microinteractions.</p>`,
+                        date: "January 30, 2025",
+                        author: "By Jason Wilson"
+                    },
+                    {
+                        id: 507,
+                        title: "Designing for Performance",
+                        body: `<p>Performance is a design consideration. Learn how design decisions impact loading speed and perceived performance.</p>`,
+                        date: "January 15, 2025",
+                        author: "By Olivia Martinez"
+                    },
+                    {
+                        id: 508,
+                        title: "Color Theory in Practice",
+                        body: `<p>Effective use of color enhances usability and aesthetics. Learn practical color theory for digital product design.</p>`,
+                        date: "December 30, 2024",
+                        author: "By Brian Taylor"
+                    },
+                    {
+                        id: 509,
+                        title: "Typography for Digital Products",
+                        body: `<p>Typography affects readability and brand perception. Learn best practices for selecting and pairing fonts.</p>`,
+                        date: "December 15, 2024",
+                        author: "By Jessica Adams"
+                    },
+                    {
+                        id: 510,
+                        title: "User Research Methods",
+                        body: `<p>Effective design starts with understanding users. Learn various research methods to inform your design decisions.</p>`,
+                        date: "November 30, 2024",
+                        author: "By Mark Robinson"
+                    },
+                    {
+                        id: 511,
+                        title: "Figma Advanced Techniques",
+                        body: `<p>Master advanced Figma features to improve your design workflow. Learn about components, auto-layout, and prototyping.</p>`,
+                        date: "November 15, 2024",
+                        author: "By Laura Wilson"
+                    },
+                    {
+                        id: 512,
+                        title: "Designing for AR/VR",
+                        body: `<p>As augmented and virtual reality become more prevalent, designers need new skills. Learn principles for creating immersive experiences.</p>`,
+                        date: "October 30, 2024",
+                        author: "By Eric Thompson"
+                    }
+                ]
+            },
+            {
+                id: 6,
+                title: "Career Growth",
+                description: "Advancing your career in tech",
+                category: "Career",
+                image: "https://images.unsplash.com/photo-1521791136064-7986c2920216?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1200&q=80",
+                articles: [
+                    {
+                        id: 601,
+                        title: "Building a Tech Portfolio",
+                        body: `<p>A strong portfolio showcases your skills effectively. Learn what to include and how to present your work.</p>`,
+                        date: "April 1, 2025",
+                        author: "By James Peterson"
+                    },
+                    {
+                        id: 602,
+                        title: "Technical Interview Prep",
+                        body: `<p>Technical interviews can be challenging. Learn strategies to prepare and perform your best.</p>`,
+                        date: "March 25, 2025",
+                        author: "By Rachel Kim"
+                    },
+                    {
+                        id: 603,
+                        title: "Remote Work Success",
+                        body: `<p>Working remotely requires different skills. Learn how to stay productive and advance your career remotely.</p>`,
+                        date: "March 15, 2025",
+                        author: "By Kevin Brown"
+                    },
+                    {
+                        id: 604,
+                        title: "Salary Negotiation",
+                        body: `<p>Negotiating compensation is an important skill. Learn strategies to negotiate effectively in the tech industry.</p>`,
+                        date: "February 28, 2025",
+                        author: "By Sophia Lee"
+                    },
+                    {
+                        id: 605,
+                        title: "Mentorship in Tech",
+                        body: `<p>Mentorship accelerates career growth. Learn how to find mentors and be an effective mentee.</p>`,
+                        date: "February 15, 2025",
+                        author: "By Jason Wilson"
+                    },
+                    {
+                        id: 606,
+                        title: "Transitioning to Leadership",
+                        body: `<p>Moving into a leadership role requires new skills. Learn how to make this transition successfully.</p>`,
+                        date: "January 30, 2025",
+                        author: "By Olivia Martinez"
+                    },
+                    {
+                        id: 607,
+                        title: "Building a Personal Brand",
+                        body: `<p>A strong personal brand opens doors. Learn how to establish yourself as an expert in your field.</p>`,
+                        date: "January 15, 2025",
+                        author: "By Brian Taylor"
+                    },
+                    {
+                        id: 608,
+                        title: "Tech Specializations",
+                        body: `<p>Specializing can make you more valuable. Explore in-demand tech specializations and how to develop expertise.</p>`,
+                        date: "December 30, 2024",
+                        author: "By Jessica Adams"
+                    },
+                    {
+                        id: 609,
+                        title: "Continuing Education",
+                        body: `<p>Technology changes rapidly. Learn effective strategies for continuous learning in tech.</p>`,
+                        date: "December 15, 2024",
+                        author: "By Mark Robinson"
+                    },
+                    {
+                        id: 610,
+                        title: "Work-Life Balance",
+                        body: `<p>Avoid burnout and maintain productivity. Learn strategies for achieving sustainable work-life balance in tech.</p>`,
+                        date: "November 30, 2024",
+                        author: "By Laura Wilson"
+                    },
+                    {
+                        id: 611,
+                        title: "Freelancing in Tech",
+                        body: `<p>Freelancing offers flexibility and opportunities. Learn how to build a successful freelance career in technology.</p>`,
+                        date: "November 15, 2024",
+                        author: "By Eric Thompson"
+                    },
+                    {
+                        id: 612,
+                        title: "Tech Certifications Guide",
+                        body: `<p>Certifications can boost your career. Learn which tech certifications are most valuable and how to prepare for them.</p>`,
+                        date: "October 30, 2024",
+                        author: "By Daniel Park"
+                    }
+                ]
+            },
+            {
+                id: 7,
+                title: "Backend Development",
+                description: "Server-side technologies and architectures",
+                category: "Backend",
+                image: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1200&q=80",
+                articles: [
+                    {
+                        id: 701,
+                        title: "Node.js Performance Optimization",
+                        body: `<p>Learn advanced techniques to optimize your Node.js applications for maximum performance and scalability.</p>`,
+                        date: "June 10, 2025",
+                        author: "By David Chen"
+                    },
+                    {
+                        id: 702,
+                        title: "Microservices Architecture",
+                        body: `<p>Microservices offer scalability and flexibility but come with complexity. Learn patterns for implementing them effectively.</p>`,
+                        date: "May 25, 2025",
+                        author: "By Sarah Johnson"
+                    },
+                    {
+                        id: 703,
+                        title: "Database Optimization",
+                        body: `<p>Database performance is critical for application speed. Learn indexing, query optimization, and caching strategies.</p>`,
+                        date: "May 15, 2025",
+                        author: "By Michael Brown"
+                    },
+                    {
+                        id: 704,
+                        title: "REST API Best Practices",
+                        body: `<p>Design robust and maintainable REST APIs with these industry-standard best practices and patterns.</p>`,
+                        date: "April 30, 2025",
+                        author: "By Emily Wilson"
+                    },
+                    {
+                        id: 705,
+                        title: "Authentication Strategies",
+                        body: `<p>Secure your applications with modern authentication methods. Compare JWT, OAuth, sessions, and more.</p>`,
+                        date: "April 15, 2025",
+                        author: "By James Peterson"
+                    },
+                    {
+                        id: 706,
+                        title: "Containerization with Docker",
+                        body: `<p>Docker has revolutionized deployment. Learn how to containerize your applications and manage containers effectively.</p>`,
+                        date: "March 28, 2025",
+                        author: "By Rachel Kim"
+                    },
+                    {
+                        id: 707,
+                        title: "Kubernetes for Developers",
+                        body: `<p>Kubernetes is the standard for container orchestration. Learn the fundamentals every developer should know.</p>`,
+                        date: "March 15, 2025",
+                        author: "By Kevin Brown"
+                    },
+                    {
+                        id: 708,
+                        title: "Serverless Architectures",
+                        body: `<p>Serverless computing changes how we build applications. Learn patterns for building scalable serverless systems.</p>`,
+                        date: "February 28, 2025",
+                        author: "By Sophia Lee"
+                    },
+                    {
+                        id: 709,
+                        title: "Message Queues and Event Streaming",
+                        body: `<p>Build decoupled, scalable systems with message queues and event streaming platforms like Kafka.</p>`,
+                        date: "February 15, 2025",
+                        author: "By Jason Wilson"
+                    },
+                    {
+                        id: 710,
+                        title: "Caching Strategies",
+                        body: `<p>Proper caching can dramatically improve performance. Learn when and how to implement different caching solutions.</p>`,
+                        date: "January 30, 2025",
+                        author: "By Olivia Martinez"
+                    },
+                    {
+                        id: 711,
+                        title: "GraphQL Implementation",
+                        body: `<p>GraphQL offers flexible data querying. Learn how to implement GraphQL APIs and integrate them with your applications.</p>`,
+                        date: "January 15, 2025",
+                        author: "By Brian Taylor"
+                    },
+                    {
+                        id: 712,
+                        title: "Backend Security Essentials",
+                        body: `<p>Protect your applications from common vulnerabilities. Learn essential backend security practices.</p>`,
+                        date: "December 30, 2024",
+                        author: "By Jessica Adams"
+                    }
+                ]
+            },
+            {
+                id: 8,
+                title: "DevOps Practices",
+                description: "Bridging development and operations",
+                category: "DevOps",
+                image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1200&q=80",
+                articles: [
+                    {
+                        id: 801,
+                        title: "CI/CD Pipelines",
+                        body: `<p>Continuous Integration and Delivery pipelines automate your deployment process. Learn how to set them up effectively.</p>`,
+                        date: "June 5, 2025",
+                        author: "By David Chen"
+                    },
+                    {
+                        id: 802,
+                        title: "Infrastructure as Code",
+                        body: `<p>Manage your infrastructure programmatically with tools like Terraform and CloudFormation.</p>`,
+                        date: "May 20, 2025",
+                        author: "By Sarah Johnson"
+                    },
+                    {
+                        id: 803,
+                        title: "Monitoring and Observability",
+                        body: `<p>Keep your applications running smoothly with proper monitoring. Learn about metrics, logging, and tracing.</p>`,
+                        date: "May 10, 2025",
+                        author: "By Michael Brown"
+                    },
+                    {
+                        id: 804,
+                        title: "Git Best Practices",
+                        body: `<p>Effective version control is essential. Learn branching strategies and workflows for team collaboration.</p>`,
+                        date: "April 25, 2025",
+                        author: "By Emily Wilson"
+                    },
+                    {
+                        id: 805,
+                        title: "Cloud Migration Strategies",
+                        body: `<p>Moving to the cloud requires planning. Learn patterns for successful cloud migration.</p>`,
+                        date: "April 10, 2025",
+                        author: "By James Peterson"
+                    },
+                    {
+                        id: 806,
+                        title: "Automated Testing Strategies",
+                        body: `<p>Comprehensive testing is key to quality. Learn how to automate different types of tests in your pipeline.</p>`,
+                        date: "March 25, 2025",
+                        author: "By Rachel Kim"
+                    },
+                    {
+                        id: 807,
+                        title: "Performance Tuning",
+                        body: `<p>Identify and fix performance bottlenecks in your applications and infrastructure.</p>`,
+                        date: "March 10, 2025",
+                        author: "By Kevin Brown"
+                    },
+                    {
+                        id: 808,
+                        title: "DevSecOps Integration",
+                        body: `<p>Integrate security into your DevOps pipeline for more secure applications.</p>`,
+                        date: "February 25, 2025",
+                        author: "By Sophia Lee"
+                    },
+                    {
+                        id: 809,
+                        title: "Configuration Management",
+                        body: `<p>Manage your server configurations consistently with tools like Ansible and Chef.</p>`,
+                        date: "February 10, 2025",
+                        author: "By Jason Wilson"
+                    },
+                    {
+                        id: 810,
+                        title: "Disaster Recovery Planning",
+                        body: `<p>Prepare for the worst with effective disaster recovery strategies for your applications.</p>`,
+                        date: "January 25, 2025",
+                        author: "By Olivia Martinez"
+                    },
+                    {
+                        id: 811,
+                        title: "Serverless CI/CD",
+                        body: `<p>Implement continuous integration and delivery for serverless applications.</p>`,
+                        date: "January 10, 2025",
+                        author: "By Brian Taylor"
+                    },
+                    {
+                        id: 812,
+                        title: "Multi-Cloud Strategies",
+                        body: `<p>Leverage multiple cloud providers for redundancy and cost optimization.</p>`,
+                        date: "December 25, 2024",
+                        author: "By Jessica Adams"
+                    }
+                ]
+            }
+        ];
+
+        // DOM elements
+        const collectionsList = document.getElementById('collections-list');
+        const globalSearch = document.getElementById('global-search');
+        const categoryFilter = document.getElementById('category-filter');
+        const articlesModal = document.getElementById('articles-modal');
+        const modalArticlesList = document.getElementById('modal-articles-list');
+        const modalCollectionTitle = document.getElementById('modal-collection-title');
+        const modalCollectionDescription = document.getElementById('modal-collection-description');
+        const modalSearch = document.getElementById('modal-search');
+        const articleView = document.getElementById('article-view');
+        const articleTitle = document.getElementById('article-title');
+        const articleDate = document.getElementById('article-date');
+        const articleAuthor = document.getElementById('article-author');
+        const articleBody = document.getElementById('article-body');
+        const articleCategory = document.getElementById('article-category');
+
+        // Current state
+        let currentCollectionId = null;
+        let allArticles = [];
+
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', () => {
+            // Populate category filter
+            const categories = [...new Set(collections.map(collection => collection.category))];
+            categories.forEach(category => {
+                const option = document.createElement('option');
+                option.value = category;
+                option.textContent = category;
+                categoryFilter.appendChild(option);
+            });
+
+            // Flatten all articles for global search
+            allArticles = collections.flatMap(collection => 
+                collection.articles.map(article => ({
+                    ...article,
+                    collectionId: collection.id,
+                    collectionTitle: collection.title,
+                    collectionCategory: collection.category
+                }))
+            );
+
+            showCollections();
+        });
+
+        // Display all collections with optional filters
+        function showCollections() {
+            const searchTerm = globalSearch.value.toLowerCase();
+            const selectedCategory = categoryFilter.value;
+            
+            collectionsList.innerHTML = '';
+            collectionsList.style.display = 'grid';
+            articleView.style.display = 'none';
+            
+            // If global search has text, show matching articles instead of collections
+            if (searchTerm.trim() !== '') {
+                showGlobalSearchResults(searchTerm, selectedCategory);
+                return;
+            }
+            
+            const filteredCollections = collections.filter(collection => {
+                const matchesCategory = selectedCategory === '' || collection.category === selectedCategory;
+                return matchesCategory;
+            });
+            
+            if (filteredCollections.length === 0) {
+                collectionsList.innerHTML = `
+                    <div class="no-results">
+                        <h3>No collections found</h3>
+                        <p>Try adjusting your category filter</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            filteredCollections.forEach(collection => {
+                const card = document.createElement('div');
+                card.className = 'collection-card';
+                card.innerHTML = `
+                    <div class="collection-image" style="background-image: url('${collection.image}')">
+                        <span class="collection-count">${collection.articles.length} articles</span>
+                    </div>
+                    <div class="collection-content">
+                        <span class="collection-category">${collection.category}</span>
+                        <h3 class="collection-title">${collection.title}</h3>
+                        <p class="collection-description">${collection.description}</p>
+                    </div>
+                `;
+                card.onclick = () => showArticlesModal(collection.id);
+                collectionsList.appendChild(card);
+            });
+            
+            articlesModal.style.display = 'none';
+        }
+
+        // Show global search results
+        function showGlobalSearchResults(searchTerm, categoryFilter) {
+            collectionsList.innerHTML = '';
+            
+            const filteredArticles = allArticles.filter(article => {
+                const matchesSearch = article.title.toLowerCase().includes(searchTerm) || 
+                                     article.body.toLowerCase().includes(searchTerm) ||
+                                     article.author.toLowerCase().includes(searchTerm);
+                const matchesCategory = categoryFilter === '' || article.collectionCategory === categoryFilter;
+                return matchesSearch && matchesCategory;
+            });
+            
+            if (filteredArticles.length === 0) {
+                collectionsList.innerHTML = `
+                    <div class="no-results">
+                        <h3>No articles found</h3>
+                        <p>Try a different search term or category filter</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            // Group articles by collection
+            const articlesByCollection = filteredArticles.reduce((acc, article) => {
+                if (!acc[article.collectionId]) {
+                    acc[article.collectionId] = {
+                        collection: collections.find(c => c.id === article.collectionId),
+                        articles: []
+                    };
+                }
+                acc[article.collectionId].articles.push(article);
+                return acc;
+            }, {});
+            
+            // Display each collection with matching articles
+            Object.values(articlesByCollection).forEach(({ collection, articles }) => {
+                const card = document.createElement('div');
+                card.className = 'collection-card';
+                card.innerHTML = `
+                    <div class="collection-image" style="background-image: url('${collection.image}')">
+                        <span class="collection-count">${articles.length} matching articles</span>
+                    </div>
+                    <div class="collection-content">
+                        <span class="collection-category">${collection.category}</span>
+                        <h3 class="collection-title">${collection.title}</h3>
+                        <p class="collection-description">${collection.description}</p>
+                    </div>
+                `;
+                card.onclick = () => showFilteredArticlesModal(collection.id, searchTerm);
+                collectionsList.appendChild(card);
+            });
+        }
+
+        // Show modal with articles for a collection
+        function showArticlesModal(collectionId) {
+            const collection = collections.find(c => c.id === collectionId);
+            if (!collection) return;
+            
+            currentCollectionId = collectionId;
+            modalCollectionTitle.textContent = collection.title;
+            modalCollectionDescription.textContent = collection.description;
+            
+            // Clear previous articles
+            modalArticlesList.innerHTML = '';
+            
+            // Add articles to modal
+            collection.articles.forEach(article => {
+                const articleEl = document.createElement('div');
+                articleEl.className = 'modal-article';
+                articleEl.innerHTML = `
+                    <h3>${article.title}</h3>
+                    <p>${article.author} • ${article.date}</p>
+                `;
+                articleEl.onclick = () => showArticle(article.id);
+                modalArticlesList.appendChild(articleEl);
+            });
+            
+            // Set up modal search
+            modalSearch.value = '';
+            modalSearch.oninput = () => filterModalArticles(collectionId, modalSearch.value);
+            
+            collectionsList.style.display = 'none';
+            articlesModal.style.display = 'block';
+        }
+
+        // Show modal with filtered articles from global search
+        function showFilteredArticlesModal(collectionId, searchTerm) {
+            const collection = collections.find(c => c.id === collectionId);
+            if (!collection) return;
+            
+            currentCollectionId = collectionId;
+            modalCollectionTitle.textContent = collection.title;
+            modalCollectionDescription.textContent = collection.description;
+            
+            // Clear previous articles
+            modalArticlesList.innerHTML = '';
+            
+            // Filter articles by search term
+            const filteredArticles = collection.articles.filter(article => 
+                article.title.toLowerCase().includes(searchTerm.toLowerCase()) || 
+                article.body.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                article.author.toLowerCase().includes(searchTerm.toLowerCase())
+            );
+            
+            // Add filtered articles to modal
+            filteredArticles.forEach(article => {
+                const articleEl = document.createElement('div');
+                articleEl.className = 'modal-article';
+                articleEl.innerHTML = `
+                    <h3>${article.title}</h3>
+                    <p>${article.author} • ${article.date}</p>
+                `;
+                articleEl.onclick = () => showArticle(article.id);
+                modalArticlesList.appendChild(articleEl);
+            });
+            
+            // Set up modal search with initial search term
+            modalSearch.value = searchTerm;
+            modalSearch.oninput = () => filterModalArticles(collectionId, modalSearch.value);
+            
+            collectionsList.style.display = 'none';
+            articlesModal.style.display = 'block';
+        }
+
+        // Filter articles within a modal
+        function filterModalArticles(collectionId, searchTerm) {
+            const collection = collections.find(c => c.id === collectionId);
+            if (!collection) return;
+            
+            const filteredArticles = collection.articles.filter(article => 
+                article.title.toLowerCase().includes(searchTerm.toLowerCase()) || 
+                article.body.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                article.author.toLowerCase().includes(searchTerm.toLowerCase())
+            );
+            
+            modalArticlesList.innerHTML = '';
+            
+            filteredArticles.forEach(article => {
+                const articleEl = document.createElement('div');
+                articleEl.className = 'modal-article';
+                articleEl.innerHTML = `
+                    <h3>${article.title}</h3>
+                    <p>${article.author} • ${article.date}</p>
+                `;
+                articleEl.onclick = () => showArticle(article.id);
+                modalArticlesList.appendChild(articleEl);
+            });
+        }
+
+        // Close the articles modal
+        function closeModal() {
+            articlesModal.style.display = 'none';
+            showCollections();
+        }
+
+        // Show a single article
+        function showArticle(articleId) {
+            // Find the collection containing this article
+            const collection = collections.find(c => 
+                c.articles.some(a => a.id === articleId)
+            );
+            
+            if (!collection) return;
+            
+            // Find the specific article
+            const article = collection.articles.find(a => a.id === articleId);
+            if (!article) return;
+            
+            articleTitle.textContent = article.title;
+            articleDate.textContent = article.date;
+            articleAuthor.textContent = article.author;
+            articleBody.innerHTML = article.body;
+            articleCategory.textContent = collection.category;
+            
+            articlesModal.style.display = 'none';
+            articleView.style.display = 'block';
+        }
+
+        // Back to articles modal from article view
+        function backToModal() {
+            articleView.style.display = 'none';
+            if (currentCollectionId) {
+                // Preserve the search term when going back
+                const searchTerm = modalSearch.value;
+                if (searchTerm.trim() !== '') {
+                    showFilteredArticlesModal(currentCollectionId, searchTerm);
+                } else {
+                    showArticlesModal(currentCollectionId);
+                }
+            } else {
+                showCollections();
+            }
+        }
+
+        // Dark mode functionality
+        function toggleTheme() {
+            const body = document.body;
+            const themeIcon = document.getElementById('theme-icon');
+            const currentTheme = body.getAttribute('data-theme');
+            
+            if (currentTheme === 'dark') {
+                body.removeAttribute('data-theme');
+                themeIcon.className = 'fas fa-moon';
+                localStorage.setItem('theme', 'light');
+            } else {
+                body.setAttribute('data-theme', 'dark');
+                themeIcon.className = 'fas fa-sun';
+                localStorage.setItem('theme', 'dark');
+            }
+        }
+
+        // Load saved theme on page load
+        function loadTheme() {
+            const savedTheme = localStorage.getItem('theme');
+            const themeIcon = document.getElementById('theme-icon');
+            
+            if (savedTheme === 'dark') {
+                document.body.setAttribute('data-theme', 'dark');
+                themeIcon.className = 'fas fa-sun';
+            } else {
+                themeIcon.className = 'fas fa-moon';
+            }
+        }
+
+        // Initialize theme on page load
+        loadTheme();
+
+        // Event listeners
+        globalSearch.addEventListener('input', showCollections);
+        categoryFilter.addEventListener('change', showCollections);
+        document.getElementById('theme-icon').addEventListener('click', toggleTheme);
+    </script>
+</body>
+</html>
