@@ -5,50 +5,51 @@
     <title>Article Collection Hub</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            --primary: #4f46e5;
-            --primary-dark: #4338ca;
-            --dark: #1e293b;
+            --primary: #4fd1c5;
+            --primary-dark: #2563eb;
+            --accent: #0ea5e9;
+            --navy: #1e293b;
+            --deep-navy: #0f172a;
             --light: #f8fafc;
             --gray: #94a3b8;
-            --border-radius: 8px;
-            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-            --transition: all 0.2s ease-in-out;
-            
+            --border-radius: 16px;
+            --shadow: 0 6px 24px -4px rgba(0, 64, 128, 0.10), 0 1.5px 6px -2px rgba(0, 0, 64, 0.10);
+            --transition: all 0.3s cubic-bezier(.4,1,.7,1);
+            --wave-gradient: linear-gradient(90deg, #4fd1c5 0%, #38bdf8 50%, #2563eb 100%);
+            --footer-gradient: linear-gradient(90deg, #0ea5e9 0%, #1e293b 100%);
             /* Light mode colors */
-            --bg-primary: #f1f5f9;
-            --bg-secondary: #ffffff;
+            --bg-primary: #e0f7fa;
+            --bg-secondary: #f8fafc;
             --text-primary: #1e293b;
             --text-secondary: #64748b;
-            --border-color: #e2e8f0;
+            --border-color: #b6e0fe;
         }
 
         [data-theme="dark"] {
-            --bg-primary: #0f172a;
-            --bg-secondary: #1e293b;
-            --text-primary: #ffffff;
-            --text-secondary: #e0e0e0;
-            --border-color: #334155;
-            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
+            --bg-primary: #0a192f;
+            --bg-secondary: #112240;
+            --text-primary: #f1f5f9;
+            --text-secondary: #b6e0fe;
+            --border-color: #233554;
+            --shadow: 0 6px 24px -4px rgba(0, 16, 32, 0.25), 0 1.5px 6px -2px rgba(0, 0, 32, 0.18);
+            --wave-gradient: linear-gradient(90deg, #0ea5e9 0%, #2563eb 100%);
+            --footer-gradient: linear-gradient(90deg, #0f172a 0%, #1e293b 100%);
         }
 
-        [data-theme="dark"] body,
-        [data-theme="dark"] h1, [data-theme="dark"] h2, [data-theme="dark"] h3, [data-theme="dark"] h4, [data-theme="dark"] h5, [data-theme="dark"] h6,
-        [data-theme="dark"] p,
-        [data-theme="dark"] a,
-        [data-theme="dark"] span,
-        [data-theme="dark"] div,
-        [data-theme="dark"] li,
-        [data-theme="dark"] .article-view *,
-        [data-theme="dark"] .articles-modal * {
+        /* Added a more specific rule to ensure all text is white in dark mode */
+        body[data-theme="dark"], body[data-theme="dark"] * {
             color: var(--text-primary) !important;
         }
 
         body {
             color: var(--text-primary);
+            font-family: 'Inter', 'Poppins', Arial, sans-serif;
+            background: var(--bg-primary);
+            min-height: 100vh;
         }
 
         [data-theme="dark"] .modal-article:hover,
@@ -78,7 +79,7 @@
         .container {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 0 20px;
+            padding: 0 2rem;
         }
 
         header {
@@ -197,23 +198,27 @@
 
         .collections-container {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 1.5rem;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 2.5rem;
             margin-bottom: 3rem;
+            margin-top: 2rem;
         }
 
         .collection-card {
-            background-color: var(--bg-secondary);
+            background: linear-gradient(120deg, #e0f7fa 60%, #f8fafc 100%);
             border-radius: var(--border-radius);
             overflow: hidden;
             box-shadow: var(--shadow);
             transition: var(--transition);
             cursor: pointer;
+            border: 1.5px solid var(--border-color);
+            min-height: 260px;
         }
 
         .collection-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+            transform: translateY(-12px) scale(1.03) rotate(-1deg);
+            box-shadow: 0 16px 32px -8px #38bdf8cc, 0 6px 16px -6px #2563eb33;
+            border-color: #38bdf8;
         }
 
         .collection-image {
@@ -461,8 +466,8 @@
 
         .footer-content {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 2rem;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 2.5rem;
             margin-bottom: 2rem;
         }
 
@@ -569,41 +574,183 @@
             background-color: var(--primary-dark);
         }
 
+        @media (max-width: 1024px) {
+            .container {
+                padding: 0 1rem;
+            }
+            .collections-container {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
         @media (max-width: 768px) {
             .header-content {
                 flex-direction: column;
                 gap: 1rem;
             }
-
             .nav-links {
                 margin-right: 0;
                 margin-top: 1rem;
             }
-
             .search-container {
                 flex-direction: column;
             }
-
             #category-filter {
                 width: 100%;
             }
-
             .collections-container {
                 grid-template-columns: 1fr;
             }
-
             .article-image {
-                height: 250px;
+                height: 180px;
             }
-
             .footer-content {
                 grid-template-columns: 1fr;
             }
+            .hero-title {
+                font-size: 2.2rem;
+            }
+            .hero-section {
+                padding: 3rem 0 1.5rem 0;
+            }
         }
-    </style>
+        @media (max-width: 500px) {
+            .hero-title {
+                font-size: 1.5rem;
+            }
+        }
+        /* Hero Section Styles */
+        .hero-section {
+            position: relative;
+            background: var(--wave-gradient);
+            min-height: 340px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            border-bottom-left-radius: 40px 24px;
+            border-bottom-right-radius: 40px 24px;
+            overflow: hidden;
+            box-shadow: 0 6px 24px -4px #38bdf844;
+            padding-bottom: 2.5rem;
+        }
+        .hero-bg {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1500&q=80') center/cover no-repeat;
+            opacity: 0.27;
+            z-index: 0;
+        }
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 1.2rem;
+            padding: 3rem 0 1.5rem 0;
+        }
+        .hero-title {
+            font-family: 'Poppins', 'Inter', Arial, sans-serif;
+            font-size: 2.8rem;
+            font-weight: 700;
+            color: #0f172a;
+            letter-spacing: 0.5px;
+            margin-bottom: 0.2em;
+            text-shadow: 0 2px 12px #38bdf822;
+        }
+        .hero-subtitle {
+            font-size: 1.25rem;
+            color: #2563eb;
+            font-weight: 500;
+            letter-spacing: 0.15px;
+            margin-bottom: 0.2em;
+        }
+        .hero-wave {
+            display: block;
+            width: 100%;
+            height: 80px;
+            position: absolute;
+            left: 0;
+            bottom: -1px;
+            z-index: 2;
+        }
+        /* About Section Styles */
+        .about-section {
+            background: var(--bg-secondary);
+            border-radius: 0 0 40px 40px/0 0 24px 24px;
+            position: relative;
+            margin-top: -2.5rem;
+            margin-bottom: 2.5rem;
+            box-shadow: 0 4px 16px -4px #38bdf822;
+            overflow: hidden;
+        }
+        .about-content {
+            padding: 3rem 1.5rem 2.2rem 1.5rem;
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .about-content h2 {
+            font-family: 'Poppins', 'Inter', Arial, sans-serif;
+            font-size: 2rem;
+            color: var(--primary-dark);
+            margin-bottom: 0.8em;
+        }
+        .about-content p {
+            color: var(--text-secondary);
+            font-size: 1.15rem;
+            font-weight: 400;
+        }
+        .about-wave {
+            display: block;
+            width: 100%;
+            height: 60px;
+            margin-bottom: -1px;
+        }
+        /* Footer Ocean Wave */
+        .ocean-footer {
+            background: var(--footer-gradient);
+            color: #fff;
+            position: relative;
+            border-top-left-radius: 40px 24px;
+            border-top-right-radius: 40px 24px;
+            overflow: hidden;
+        }
+        .footer-wave {
+            display: block;
+            width: 100%;
+            height: 60px;
+            position: absolute;
+            top: -1px;
+            left: 0;
+            z-index: 2;
+        }
+        /* Animations */
+        .collection-card, .modal-article, .footer-column, .theme-toggle {
+            transition: box-shadow 0.3s cubic-bezier(.4,1,.7,1), transform 0.3s cubic-bezier(.4,1,.7,1), border-color 0.3s;
+        }
+        .theme-toggle:active {
+            transform: scale(0.96) rotate(-8deg);
+        }
+        .modal-article:hover {
+            background: #e0f7fa;
+            box-shadow: 0 8px 18px -4px #38bdf822;
+            border-color: #38bdf8;
+        }
+            .ocean-header {
+            transition: transform 0.45s cubic-bezier(.4,1,.7,1), box-shadow 0.3s;
+            will-change: transform;
+        }
+        .ocean-header.header--quick {
+            transition: transform 0.18s cubic-bezier(.4,1,.7,1), box-shadow 0.18s;
+        }
+        .ocean-header.header--hidden {
+            transform: translateY(-120%);
+            box-shadow: none !important;
+        }
+</style>
 </head>
 <body>
-    <header>
+    <header class="ocean-header" id="main-header">
         <div class="container">
             <div class="header-content">
                 <a href="#" class="logo" onclick="showCollections(); return false;">ArticleHub</a>
@@ -616,36 +763,47 @@
                         <i class="fas fa-moon" id="theme-icon"></i>
                     </button>
                 </div>
-                <div class="search-container">
-                    <i class="fas fa-search search-icon"></i>
-                    <input type="text" id="global-search" placeholder="Search all articles...">
-                    <select id="category-filter">
-                        <option value="">All Categories</option>
-                    </select>
-                </div>
             </div>
+        </div>
+        <section class="hero-section">
+            <div class="hero-bg"></div>
+            <div class="container hero-content">
+                <h1 class="hero-title">Ride the Waves of Knowledge</h1>
+                <p class="hero-subtitle">Curated articles for modern web creators, inspired by the ocean's flow.</p>
+            </div>
+            <svg class="hero-wave" viewBox="0 0 1440 120" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill="url(#waveGradient)" fill-opacity="1" d="M0,80 C480,160 960,0 1440,80 L1440,120 L0,120 Z"></path><defs><linearGradient id="waveGradient" x1="0" y1="0" x2="1440" y2="0" gradientUnits="userSpaceOnUse"><stop stop-color="#4fd1c5"/><stop offset="1" stop-color="#2563eb"/></linearGradient></defs></svg>
+        </section>
+        <div class="search-container">
+            <i class="fas fa-search search-icon"></i>
+            <input type="text" id="global-search" placeholder="Search all articles...">
+            <select id="category-filter">
+                <option value="">All Categories</option>
+            </select>
         </div>
     </header>
 
     <main class="container">
+        <section class="about-section">
+            <div class="about-content">
+                <h2>About ArticleHub</h2>
+                <p>ArticleHub is your breezy, ocean-inspired platform for curated web development, design, and tech career articles. We believe in the flow of knowledge, the lightness of learning, and the power of community.</p>
+            </div>
+            <svg class="about-wave" viewBox="0 0 1440 80" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill="url(#aboutWaveGradient)" fill-opacity="1" d="M0,40 C480,120 960,0 1440,40 L1440,80 L0,80 Z"></path><defs><linearGradient id="aboutWaveGradient" x1="0" y1="0" x2="1440" y2="0" gradientUnits="userSpaceOnUse"><stop stop-color="#38bdf8"/><stop offset="1" stop-color="#6366f1"/></linearGradient></defs></svg>
+        </section>
         <div class="collections-container" id="collections-list"></div>
-        
         <!-- Articles Modal -->
         <div class="articles-modal" id="articles-modal">
             <div class="modal-content">
                 <button class="close-modal" onclick="closeModal()">&times;</button>
                 <h2 id="modal-collection-title"></h2>
                 <p id="modal-collection-description"></p>
-                
                 <div class="modal-search-container">
                     <i class="fas fa-search modal-search-icon"></i>
                     <input type="text" id="modal-search" placeholder="Search in this collection...">
                 </div>
-                
                 <div class="modal-articles" id="modal-articles-list"></div>
             </div>
         </div>
-        
         <!-- Single Article View -->
         <article class="article-view" id="article-view">
             <div class="article-header">
@@ -664,7 +822,8 @@
         </article>
     </main>
 
-    <footer>
+    <footer class="ocean-footer">
+        <svg class="footer-wave" viewBox="0 0 1440 80" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill="url(#footerWaveGradient)" fill-opacity="1" d="M0,40 C480,120 960,0 1440,40 L1440,80 L0,80 Z"></path><defs><linearGradient id="footerWaveGradient" x1="0" y1="0" x2="1440" y2="0" gradientUnits="userSpaceOnUse"><stop stop-color="#0ea5e9"/><stop offset="1" stop-color="#1e293b"/></linearGradient></defs></svg>
         <div class="container">
             <div class="footer-content">
                 <div class="footer-column">
@@ -677,7 +836,6 @@
                         <a href="#"><i class="fab fa-youtube"></i></a>
                     </div>
                 </div>
-                
                 <div class="footer-column">
                     <h3>Categories</h3>
                     <ul>
@@ -689,7 +847,6 @@
                         <li><a href="#">Career</a></li>
                     </ul>
                 </div>
-                
                 <div class="footer-column">
                     <h3>Resources</h3>
                     <ul>
@@ -700,7 +857,6 @@
                         <li><a href="#">Community</a></li>
                     </ul>
                 </div>
-                
                 <div class="footer-column">
                     <h3>Newsletter</h3>
                     <p style="color: var(--gray);">Subscribe to get the latest articles and resources.</p>
@@ -710,9 +866,8 @@
                     </form>
                 </div>
             </div>
-            
             <div class="footer-bottom">
-                <p class="copyright">© 2025 ArticleHub. All rights reserved. | <a href="#" style="color: var(--gray);">Privacy Policy</a> | <a href="#" style="color: var(--gray);">Terms of Service</a></p>
+                <p class="copyright"> 2025 ArticleHub. All rights reserved. | <a href="#" style="color: var(--gray);">Privacy Policy</a> | <a href="#" style="color: var(--gray);">Terms of Service</a></p>
             </div>
         </div>
     </footer>
@@ -1788,6 +1943,32 @@
 
         // Initialize theme on page load
         loadTheme();
+
+        // Auto-hide header on scroll
+        let lastScrollY = window.scrollY;
+        let ticking = false;
+        const header = document.getElementById('main-header');
+        function onScroll() {
+            if (!ticking) {
+                window.requestAnimationFrame(() => {
+                    const currentY = window.scrollY;
+                    if (currentY === 0) {
+                        header.classList.remove('header--hidden');
+                        header.classList.add('header--quick');
+                    } else if (currentY > lastScrollY && currentY > 80) {
+                        header.classList.add('header--hidden');
+                        header.classList.remove('header--quick');
+                    } else {
+                        header.classList.remove('header--hidden');
+                        header.classList.remove('header--quick');
+                    }
+                    lastScrollY = currentY;
+                    ticking = false;
+                });
+                ticking = true;
+            }
+        }
+        window.addEventListener('scroll', onScroll);
 
         // Event listeners
         globalSearch.addEventListener('input', showCollections);
