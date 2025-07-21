@@ -4,25 +4,47 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>About Us - ArticleHub</title>
-
-<script type='text/javascript' src='//pl27112283.profitableratecpm.com/51/13/bf/5113bf0819e1c814bfb221f53b44d918.js'></script>
-
-
-
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            --primary: #4f46e5;
-            --primary-dark: #4338ca;
-            --dark: #1e293b;
+            --primary: #4fd1c5;
+            --primary-dark: #2563eb;
+            --accent: #0ea5e9;
+            --navy: #1e293b;
             --light: #f8fafc;
             --gray: #94a3b8;
-            --border-radius: 8px;
-            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-            --transition: all 0.2s ease-in-out;
+            --border-radius: 16px;
+            --shadow: 0 6px 24px -4px rgba(0, 64, 128, 0.10), 0 1.5px 6px -2px rgba(0, 0, 64, 0.10);
+            --transition: all 0.3s cubic-bezier(.4,1,.7,1);
+            --ocean-gradient: linear-gradient(90deg, #4fd1c5 0%, #38bdf8 50%, #2563eb 100%);
+            --ocean-gradient-dark: linear-gradient(90deg, #0ea5e9 0%, #1e293b 100%);
+            --header-bg: var(--ocean-gradient);
+            --footer-bg: var(--ocean-gradient-dark);
+            --text-main: #1e293b;
+            --text-light: #f8fafc;
+            --bg-main: #e0f7fa;
+            --bg-dark: #0a192f;
+        }
+        [data-theme="dark"] {
+            --primary: #0ea5e9;
+            --primary-dark: #0a2540;
+            --accent: #38bdf8;
+            --navy: #0a2540;
+            --light: #0a2540;
+            --gray: #64748b;
+            --border-radius: 16px;
+            --shadow: 0 6px 24px -4px rgba(0, 16, 32, 0.25), 0 1.5px 6px -2px rgba(0, 0, 32, 0.18);
+            --ocean-gradient: linear-gradient(90deg, #0ea5e9 0%, #2563eb 100%);
+            --ocean-gradient-dark: linear-gradient(90deg, #0f172a 0%, #1e293b 100%);
+            --header-bg: var(--ocean-gradient);
+            --footer-bg: var(--ocean-gradient-dark);
+            --text-main: #f1f5f9;
+            --text-light: #0a2540;
+            --bg-main: #0a192f;
+            --bg-dark: #2563eb;
         }
 
         * {
@@ -34,8 +56,8 @@
         body {
             font-family: 'Inter', sans-serif;
             line-height: 1.6;
-            background-color: #f1f5f9;
-            color: var(--dark);
+            background-color: var(--bg-main);
+            color: var(--text-main);
         }
 
         .container {
@@ -44,13 +66,28 @@
             padding: 0 20px;
         }
 
-        header {
-            background-color: white;
+        .ocean-header {
+            background: var(--header-bg);
+            color: var(--text-light);
             box-shadow: var(--shadow);
             position: sticky;
             top: 0;
             z-index: 100;
-            padding: 1rem 0;
+            padding: 1.2rem 0 0.5rem;
+            border-bottom-left-radius: 0;
+            border-bottom-right-radius: 0;
+            transition: transform 0.45s cubic-bezier(.4,1,.7,1), box-shadow 0.3s;
+            will-change: transform;
+        }
+        .ocean-header.header--hidden {
+            transform: translateY(-120%);
+            box-shadow: none !important;
+        }
+        .ocean-header.header--quick {
+            transition: transform 0.18s cubic-bezier(.4,1,.7,1), box-shadow 0.18s;
+        }
+        .header-wave {
+            margin-bottom: -5px;
         }
 
         .header-content {
@@ -60,21 +97,26 @@
         }
 
         .logo {
-            font-size: 1.5rem;
+            font-family: 'Poppins', 'Inter', sans-serif;
+            font-size: 2rem;
             font-weight: 700;
             color: var(--primary);
             text-decoration: none;
+            letter-spacing: 1px;
+            text-shadow: 0 2px 8px #38bdf822;
+            transition: color 0.3s;
         }
 
         .nav-links {
             display: flex;
             gap: 1.5rem;
+            margin-left: auto; /* Changed to push to right */
             margin-right: 1rem;
         }
 
         .nav-links a {
             text-decoration: none;
-            color: var(--dark);
+            color: var(--text-light);
             font-weight: 500;
             transition: var(--transition);
             padding: 0.5rem 0;
@@ -84,6 +126,33 @@
         .nav-links a:hover {
             color: var(--primary);
             border-bottom: 2px solid var(--primary);
+        }
+
+        /* Theme toggle button styles */
+        .theme-toggle-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .theme-toggle-btn {
+            background: none;
+            border: none;
+            color: var(--text-light);
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: var(--transition);
+            padding: 5px;
+            border-radius: 50%;
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .theme-toggle-btn:hover {
+            background-color: rgba(255, 255, 255, 0.1);
         }
 
         /* About Page Styles */
@@ -98,6 +167,7 @@
         .about-hero h1 {
             font-size: 2.5rem;
             margin-bottom: 1rem;
+            color: #ffffff; /* Purple color for heading */
         }
 
         .about-hero p {
@@ -216,7 +286,7 @@
         .form-group textarea:focus {
             outline: none;
             border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.2);
+            box-shadow: 0 0 0 3px rgba(138, 43, 226, 0.2); /* Updated shadow color */
         }
 
         .form-group textarea {
@@ -261,7 +331,7 @@
 
         .comment-author {
             font-weight: 600;
-            color: var(--dark);
+            color: var(--text-main);
         }
 
         .comment-author .website {
@@ -311,10 +381,12 @@
 
         /* Footer */
         footer {
-            background-color: var(--dark);
-            color: white;
+            background-color: var(--footer-bg);
+            color: var(--text-light);
             padding: 3rem 0 1.5rem;
             margin-top: 3rem;
+            position: relative;
+            overflow: hidden;
         }
 
         .footer-content {
@@ -327,7 +399,7 @@
         .footer-column h3 {
             font-size: 1.1rem;
             margin-bottom: 1.25rem;
-            color: white;
+            color: var(--text-light);
             position: relative;
             padding-bottom: 0.5rem;
         }
@@ -358,7 +430,7 @@
         }
 
         .footer-column a:hover {
-            color: white;
+            color: var(--text-light);
             transform: translateX(5px);
         }
 
@@ -378,7 +450,7 @@
         }
 
         .social-links a {
-            color: white;
+            color: var(--text-light);
             font-size: 1.25rem;
             transition: var(--transition);
             width: 40px;
@@ -409,6 +481,7 @@
             .nav-links {
                 margin-right: 0;
                 margin-top: 1rem;
+                margin-left: 0; /* Reset for mobile */
             }
 
             .about-hero {
@@ -426,7 +499,7 @@
     </style>
 </head>
 <body>
-    <header>
+    <header class="ocean-header" id="main-header">
         <div class="container">
             <div class="header-content">
                 <a href="index.html" class="logo">ArticleHub</a>
@@ -434,8 +507,17 @@
                     <a href="index.html">Home</a>
                     <a href="aboutus.html" class="active">About Us</a>
                 </div>
+                <div class="theme-toggle-container">
+                    <button id="theme-toggle" class="theme-toggle-btn" title="Toggle theme" aria-label="Toggle theme">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                    <button id="brightness-toggle" class="theme-toggle-btn" title="Adjust brightness" aria-label="Adjust brightness">
+                        <i class="fas fa-sun"></i>
+                    </button>
+                </div>
             </div>
         </div>
+        <svg class="header-wave" viewBox="0 0 1440 80" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:block;width:100%;height:60px;"><path d="M0,40 C480,120 960,0 1440,80 L1440,0 L0,0 Z" fill="url(#header-wave-gradient)"/><defs><linearGradient id="header-wave-gradient" x1="0" y1="0" x2="1440" y2="0" gradientUnits="userSpaceOnUse"><stop stop-color="#8a2be2"/><stop offset="1" stop-color="#9d4edd"/></linearGradient></defs></svg>
     </header>
 
     <main class="container">
@@ -562,6 +644,7 @@
     </main>
 
     <footer>
+        <svg class="footer-wave" viewBox="0 0 1440 80" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:block;width:100%;height:60px;position:absolute;top:-60px;left:0;"><path d="M0,80 C480,0 960,120 1440,40 L1440,80 L0,80 Z" fill="url(#footer-wave-gradient)"/><defs><linearGradient id="footer-wave-gradient" x1="0" y1="0" x2="1440" y2="0" gradientUnits="userSpaceOnUse"><stop stop-color="#38bdf8"/><stop offset="1" stop-color="#0ea5e9"/></linearGradient></defs></svg>
         <div class="container">
             <div class="footer-content">
                 <div class="footer-column">
@@ -608,41 +691,131 @@
                 </div>
             </div>
             
-
-<script type="text/javascript">
-	atOptions = {
-		'key' : 'a5a34b96a03ad280acd9ad9cecd9857d',
-		'format' : 'iframe',
-		'height' : 300,
-		'width' : 160,
-		'params' : {}
-	};
-</script>
-<script type="text/javascript" src="//www.highperformanceformat.com/a5a34b96a03ad280acd9ad9cecd9857d/invoke.js"></script>
-
-
-
-
-
-
             <div class="footer-bottom">
-                <p class="copyright">© 2025 ArticleHub. All rights reserved. | <a href="#" style="color: var(--gray);">Privacy Policy</a> | <a href="#" style="color: var(--gray);">Terms of Service</a></p>
+                <p class="copyright"> 2025 ArticleHub. All rights reserved. | <a href="#" style="color: var(--gray);">Privacy Policy</a> | <a href="#" style="color: var(--gray);">Terms of Service</a></p>
             </div>
         </div>
     </footer>
+
     <script>
-        // Load comments when page loads
-        document.addEventListener('DOMContentLoaded', function() {
-            loadComments();
+        // THEME TOGGLE AND BRIGHTNESS CONTROL
+        const themeToggle = document.getElementById('theme-toggle');
+        const brightnessToggle = document.getElementById('brightness-toggle');
+        let brightnessLevel = 100; // Default brightness (100%)
+        
+        // Theme toggle function
+        function setTheme(theme) {
+            document.documentElement.setAttribute('data-theme', theme);
+            localStorage.setItem('articleHubTheme', theme);
+            themeToggle.innerHTML = theme === 'dark' ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+            themeToggle.setAttribute('aria-label', theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode');
+        }
+        
+        // Brightness control function
+        function setBrightness(level) {
+            brightnessLevel = level;
+            document.body.style.filter = `brightness(${level}%)`;
+            localStorage.setItem('articleHubBrightness', level);
             
-            // Handle form submission
-            document.getElementById('commentForm').addEventListener('submit', function(e) {
-                e.preventDefault();
-                addComment();
-            });
+            // Update brightness toggle icon
+            if (level === 100) {
+                brightnessToggle.innerHTML = '<i class="fas fa-sun"></i>';
+            } else if (level === 80) {
+                brightnessToggle.innerHTML = '<i class="fas fa-adjust"></i>';
+            } else {
+                brightnessToggle.innerHTML = '<i class="fas fa-moon"></i>';
+            }
+        }
+        
+        // Cycle through brightness levels
+        function cycleBrightness() {
+            if (brightnessLevel === 100) {
+                setBrightness(80);
+            } else if (brightnessLevel === 80) {
+                setBrightness(60);
+            } else {
+                setBrightness(100);
+            }
+        }
+        
+        // Load saved theme and brightness
+        function loadSettings() {
+            const savedTheme = localStorage.getItem('articleHubTheme');
+            setTheme(savedTheme === 'dark' ? 'dark' : 'light');
+            
+            const savedBrightness = localStorage.getItem('articleHubBrightness');
+            if (savedBrightness) {
+                setBrightness(parseInt(savedBrightness));
+            }
+        }
+        
+        // Event listeners
+        themeToggle.addEventListener('click', () => {
+            const current = document.documentElement.getAttribute('data-theme');
+            setTheme(current === 'dark' ? 'light' : 'dark');
         });
         
-        function addComment() {
+        brightnessToggle.addEventListener('click', cycleBrightness);
+        
+        // Initialize settings
+        loadSettings();
+        
+        // Header auto-hide on scroll
+        let lastScrollY = window.scrollY;
+        let ticking = false;
+        const header = document.getElementById('main-header');
+        
+        function onScroll() {
+            if (!ticking) {
+                window.requestAnimationFrame(() => {
+                    const currentY = window.scrollY;
+                    if (currentY === 0) {
+                        header.classList.remove('header--hidden');
+                        header.classList.add('header--quick');
+                    } else if (currentY > lastScrollY && currentY > 80) {
+                        header.classList.add('header--hidden');
+                        header.classList.remove('header--quick');
+                    } else {
+                        header.classList.remove('header--hidden');
+                        header.classList.remove('header--quick');
+                    }
+                    lastScrollY = currentY;
+                    ticking = false;
+                });
+                ticking = true;
+            }
+        }
+        
+        window.addEventListener('scroll', onScroll);
+        
+        // COMMENT SYSTEM - PERSISTENT AND LIVE UPDATING
+        function renderComment(comment) {
+            const commentDiv = document.createElement('div');
+            commentDiv.className = 'comment';
+            
+            let websiteLink = '';
+            if (comment.website) {
+                // Ensure website has http:// prefix
+                let websiteUrl = comment.website;
+                if (!websiteUrl.startsWith('http://') && !websiteUrl.startsWith('https://')) {
+                    websiteUrl = 'https://' + websiteUrl;
+                }
+                websiteLink = ` • <a href="${websiteUrl}" class="website" target="_blank">${comment.website.replace(/^https?:\/\//, '')}</a>`;
+            }
+            
+            commentDiv.innerHTML = `
+                <div class="comment-header">
+                    <div class="comment-author">${comment.name}${websiteLink}</div>
+                    <div class="comment-date">${comment.date}</div>
+                </div>
+                <div class="comment-text">${comment.text}</div>
+            `;
+            return commentDiv;
+        }
+        
+        function addComment(event) {
+            event.preventDefault();
+            
             const name = document.getElementById('name').value.trim();
             const email = document.getElementById('email').value.trim();
             const website = document.getElementById('website').value.trim();
@@ -674,8 +847,16 @@
             // Clear the form
             document.getElementById('commentForm').reset();
             
-            // Reload comments
-            loadComments();
+            // Live update: append only the new comment
+            const commentsList = document.getElementById('commentsList');
+            
+            // Remove "no comments" message if it exists
+            if (comments.length === 1) {
+                commentsList.innerHTML = '';
+            }
+            
+            // Add new comment at the top
+            commentsList.insertBefore(renderComment(comment), commentsList.firstChild);
         }
         
         function loadComments() {
@@ -692,33 +873,15 @@
             
             // Display comments in reverse order (newest first)
             comments.reverse().forEach(comment => {
-                const commentDiv = document.createElement('div');
-                commentDiv.className = 'comment';
-                
-                let websiteLink = '';
-                if (comment.website) {
-                    // Ensure website has http:// prefix
-                    let websiteUrl = comment.website;
-                    if (!websiteUrl.startsWith('http://') && !websiteUrl.startsWith('https://')) {
-                        websiteUrl = 'https://' + websiteUrl;
-                    }
-                    websiteLink = ` • <a href="${websiteUrl}" class="website" target="_blank">${comment.website.replace(/^https?:\/\//, '')}</a>`;
-                }
-                
-                commentDiv.innerHTML = `
-                    <div class="comment-header">
-                        <div class="comment-author">${comment.name}${websiteLink}</div>
-                        <div class="comment-date">${comment.date}</div>
-                    </div>
-                    <div class="comment-text">${comment.text}</div>
-                `;
-                commentsList.appendChild(commentDiv);
+                commentsList.appendChild(renderComment(comment));
             });
         }
+        
+        // Initialize comment system when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            loadComments();
+            document.getElementById('commentForm').addEventListener('submit', addComment);
+        });
     </script>
-
-<script type='text/javascript' src='//pl27112295.profitableratecpm.com/cc/12/8a/cc128a5b5f8aa2fc076c2f7d5ef64e07.js'></script>
-
-
 </body>
 </html>
