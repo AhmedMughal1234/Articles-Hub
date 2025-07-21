@@ -88,7 +88,7 @@
             position: sticky;
             top: 0;
             z-index: 100;
-            padding: 1rem 0;
+            padding: 0.4rem 0 0.2rem 0;
             transition: var(--transition);
         }
 
@@ -96,13 +96,40 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            gap: 0.8rem;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            margin-left: auto;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        @media (max-width: 600px) {
+            .logo {
+                font-size: 1.3rem;
+            }
+            .header-actions {
+                gap: 0.7rem;
+            }
+            .nav-links {
+                gap: 0.7rem;
+            }
         }
 
         .logo {
-            font-size: 1.5rem;
-            font-weight: 700;
+            font-size: 2.5rem;
+            font-weight: 800;
             color: var(--primary);
             text-decoration: none;
+            letter-spacing: 2px;
+            line-height: 1;
         }
 
         .nav-links {
@@ -115,8 +142,9 @@
             text-decoration: none;
             color: var(--dark);
             font-weight: 500;
+            font-size: 0.98rem;
             transition: var(--transition);
-            padding: 0.5rem 0;
+            padding: 0.3rem 0;
             border-bottom: 2px solid transparent;
         }
 
@@ -752,10 +780,12 @@
 <body>
     <header class="ocean-header" id="main-header">
         <div class="container">
-            <div class="header-content">
-                <a href="#" class="logo" onclick="showCollections(); return false;">ArticleHub</a>
-                <div class="header-actions">
-                    <nav class="nav-links">
+            <div class="header-content" style="display: flex; align-items: center; justify-content: space-between;">
+                <div style="flex:1; display:flex; align-items:center;">
+                    <a href="#" class="logo" style="margin-right:auto;" onclick="showCollections(); return false;">ArticleHub</a>
+                </div>
+                <div class="header-actions" style="display: flex; align-items: center; gap: 1.5rem; margin-left:auto;">
+                    <nav class="nav-links" style="display: flex; gap: 1.5rem;">
                         <a href="#" onclick="showCollections(); return false;">Home</a>
                         <a href="aboutus.html">About</a>
                     </nav>
@@ -765,14 +795,7 @@
                 </div>
             </div>
         </div>
-        <section class="hero-section">
-            <div class="hero-bg"></div>
-            <div class="container hero-content">
-                <h1 class="hero-title">Ride the Waves of Knowledge</h1>
-                <p class="hero-subtitle">Curated articles for modern web creators, inspired by the ocean's flow.</p>
-            </div>
-            <svg class="hero-wave" viewBox="0 0 1440 120" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill="url(#waveGradient)" fill-opacity="1" d="M0,80 C480,160 960,0 1440,80 L1440,120 L0,120 Z"></path><defs><linearGradient id="waveGradient" x1="0" y1="0" x2="1440" y2="0" gradientUnits="userSpaceOnUse"><stop stop-color="#4fd1c5"/><stop offset="1" stop-color="#2563eb"/></linearGradient></defs></svg>
-        </section>
+
         <div class="search-container">
             <i class="fas fa-search search-icon"></i>
             <input type="text" id="global-search" placeholder="Search all articles...">
